@@ -1,0 +1,39 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+//
+// Lirevo proje geneli build ayarları. Ürün adı, bundle ID ve web sitesi
+// YALNIZCA burada tanımlanır (CLAUDE.md, karar 4). Kod bu değerleri
+// Info.plist üzerinden `AppInfo` ile okur.
+//
+// Çatallar (fork) farklı bir ad kullanmalıdır: TRADEMARKS.md.
+
+// MARK: - Ürün kimliği
+
+APP_PRODUCT_NAME = Lirevo
+PRODUCT_NAME = $(APP_PRODUCT_NAME)
+PRODUCT_BUNDLE_IDENTIFIER = app.lirevo
+// xcconfig'de `//` yorum başlattığı için `$()` ile bölünür.
+APP_WEBSITE = https:/$()/lirevo.app
+
+MARKETING_VERSION = 0.1.0
+CURRENT_PROJECT_VERSION = 1
+
+// MARK: - Platform
+
+MACOSX_DEPLOYMENT_TARGET = 14.2
+ARCHS = arm64
+EXCLUDED_ARCHS = x86_64
+
+// MARK: - Swift
+
+SWIFT_VERSION = 6.0
+SWIFT_STRICT_CONCURRENCY = complete
+
+// MARK: - Güvenlik ve dağıtım (docs/trd.md §2)
+
+ENABLE_APP_SANDBOX = NO
+ENABLE_HARDENED_RUNTIME = YES
+
+// MARK: - Geliştiriciye özel ayarlar (git dışı)
+// Config/Local.xcconfig.example dosyasını Config/Local.xcconfig olarak kopyala.
+
+#include? "Local.xcconfig"

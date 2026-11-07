@@ -1,0 +1,8 @@
+// Geliştiriciye özel ayarlar. Bu dosyayı `Config/Local.xcconfig` adıyla kopyala
+// ve kendi değerlerini gir. `Config/Local.xcconfig` git'e girmez.
+//
+// Takım kimliği: Xcode > Settings > Accounts veya proje > Signing & Capabilities.
+// Boş bırakılırsa uygulama yerel olarak imzalanır; bu durumda Otomasyon izni
+// her derlemede yeniden sorulabilir.
+
+DEVELOPMENT_TEAM =
