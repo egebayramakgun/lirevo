@@ -1,0 +1,78 @@
+name: Hata raporu / Bug report
+description: Bir şey beklendiği gibi çalışmıyor. / Something isn't working as expected.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Güvenlik açıklarını burada bildirme; SECURITY.md'ye bak.
+        Don't report security issues here; see SECURITY.md.
+  - type: textarea
+    id: description
+    attributes:
+      label: Ne oldu? / What happened?
+      description: Ne bekliyordun, ne gördün? / What did you expect, and what did you see?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Yeniden üretme adımları / Steps to reproduce
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: input
+    id: app-version
+    attributes:
+      label: Uygulama sürümü / App version
+      description: Menü panelinin üst kısmında. / Shown at the top of the menu panel.
+      placeholder: "0.1.0 (1)"
+    validations:
+      required: true
+  - type: input
+    id: macos-version
+    attributes:
+      label: macOS sürümü / macOS version
+      description: Apple menüsü > Bu Mac Hakkında. Mümkünse build numarasıyla. / Apple menu > About This Mac, including the build number if possible.
+      placeholder: "26.1 (25B78)"
+    validations:
+      required: true
+  - type: input
+    id: mac-model
+    attributes:
+      label: Mac modeli / Mac model
+      placeholder: "MacBook Air 13\" M1, 2020"
+    validations:
+      required: true
+  - type: dropdown
+    id: player
+    attributes:
+      label: Oynatıcı / Player
+      options:
+        - Spotify
+        - Müzik / Apple Music
+        - İkisi de / Both
+        - Fark etmez / Not related
+    validations:
+      required: true
+  - type: textarea
+    id: displays
+    attributes:
+      label: Ekranlar / Displays
+      description: Dahili ekran, harici ekranlar, notch var mı? / Built-in display, external displays, notch?
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Sistem Durumu teşhis paketi / System Status diagnostics bundle
+      description: |
+        Sistem Durumu > "Teşhis paketini kopyala" ile kopyalayıp buraya yapıştır. Şarkı adları maskelenir.
+        Copy it via System Status > "Copy diagnostics bundle" and paste it here. Track names are masked.
+      render: text
+  - type: textarea
+    id: extra
+    attributes:
+      label: Ek bilgi / Additional context
+      description: Ekran görüntüsü, video, log. / Screenshots, video, logs.
