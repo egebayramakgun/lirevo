@@ -1,0 +1,38 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Open a song in Spotify or Music." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open a song in Spotify or Music."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spotify veya Müzik'te bir şarkı aç."
+          }
+        }
+      }
+    },
+    "Quit" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quit"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Çıkış"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
