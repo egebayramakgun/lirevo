@@ -1,0 +1,106 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# M1-T6: Her push ve pull request'te derleme + test (macOS, Apple Silicon).
+# - Paket testleri (swift test, uyarılar hata sayılır)
+# - Uygulama Release derlemesi + yalnız arm64 doğrulaması
+# - Uygulama birim testleri (LirevoTests)
+# Arayüz testleri (LirevoUITests) CI'da çalıştırılmaz: menü çubuğu öğesine
+# tıklama, başsız runner'larda güvenilir değildir. Yerelde çalıştır.
+#
+# İmzalama: CI'da takım kimliği ve sertifika yoktur; ad-hoc (-) imza kullanılır.
+# Gizli anahtar gerektirmez. Dağıtım imzası release.yml'de (M8) gelir.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  SIGNING_FLAGS: CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=
+  STRICT_FLAGS: SWIFT_TREAT_WARNINGS_AS_ERRORS=YES GCC_TREAT_WARNINGS_AS_ERRORS=YES
+  DERIVED_DATA: ${{ github.workspace }}/DerivedData
+
+jobs:
+  build-test:
+    name: Build & test (macOS arm64)
+    # Proje Xcode 27 biçiminde (project.xcproj); Xcode 27 imajı gerekir.
+    # Not: `xcode-27` GitHub'da önizleme (preview) imajıdır.
+    runs-on: xcode-27
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Show toolchain
+        run: |
+          test "$(uname -m)" = "arm64" || { echo "::error::Runner arm64 değil"; exit 1; }
+          sw_vers
+          xcode-select -p
+          xcodebuild -version
+          swift --version
+          major=$(xcodebuild -version | head -1 | awk '{print $2}' | cut -d. -f1)
+          test "$major" -ge 27 || { echo "::error::Xcode 27 veya sonrası gerekli (bulunan: $major)"; exit 1; }
+
+      - name: Package tests (LirevoKit)
+        run: swift test --package-path LirevoKit -Xswiftc -warnings-as-errors
+
+      - name: Build app (Release, generic macOS)
+        run: |
+          xcodebuild \
+            -project Lirevo.xcodeproj \
+            -scheme Lirevo \
+            -configuration Release \
+            -destination 'generic/platform=macOS' \
+            -derivedDataPath "$DERIVED_DATA" \
+            $SIGNING_FLAGS $STRICT_FLAGS \
+            build
+
+      - name: Verify arm64-only binaries
+        run: |
+          app=$(find "$DERIVED_DATA/Build/Products/Release" -maxdepth 1 -name '*.app' | head -1)
+          test -n "$app" || { echo "::error::Uygulama paketi bulunamadı"; exit 1; }
+          found=0
+          while IFS= read -r -d '' f; do
+            if file "$f" | grep -q 'Mach-O'; then
+              archs=$(lipo -archs "$f")
+              echo "$f: $archs"
+              found=1
+              if [ "$archs" != "arm64" ]; then
+                echo "::error file=$f::arm64 dışı mimari: $archs"
+                exit 1
+              fi
+            fi
+          done < <(find "$app" -type f -perm -u+x -print0)
+          test "$found" = 1 || { echo "::error::Mach-O dosyası bulunamadı"; exit 1; }
+
+      - name: App unit tests (LirevoTests)
+        run: |
+          xcodebuild \
+            -project Lirevo.xcodeproj \
+            -scheme Lirevo \
+            -configuration Debug \
+            -destination 'platform=macOS,arch=arm64' \
+            -derivedDataPath "$DERIVED_DATA" \
+            -resultBundlePath TestResults.xcresult \
+            $SIGNING_FLAGS $STRICT_FLAGS \
+            test -only-testing:LirevoTests
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: TestResults
+          path: TestResults.xcresult
+          if-no-files-found: ignore
+          retention-days: 7

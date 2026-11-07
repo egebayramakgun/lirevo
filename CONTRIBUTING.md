@@ -65,6 +65,10 @@ log stream --level debug --predicate 'subsystem BEGINSWITH "app.lirevo"'
 - Yeni mantık için birim testi yaz (Swift Testing). Donanım veya izin gerektiren davranışlar için mock kaynaklar kullan.
 - Gerçek donanımda doğrulanması gereken değişikliklerde (izin pencereleri, kilit ekranı, çoklu ekran, görsel kalite) pull request açıklamasına **manuel test adımlarını** ekle.
 
+### CI
+
+Her push ve pull request'te GitHub Actions (`.github/workflows/ci.yml`) paket testlerini, Release derlemesini, yalnız arm64 kontrolünü ve uygulama birim testlerini çalıştırır. Uyarılar hata sayılır. Arayüz testleri CI'da çalışmaz; arayüzü etkileyen değişikliklerde onları yerelde çalıştır.
+
 ### Commit ve pull request
 
 - [Conventional Commits](https://www.conventionalcommits.org/) kullan; varsa görev kimliğini ekle: `feat(lyrics): M5-T6 word timing estimator`.
@@ -137,6 +141,10 @@ log stream --level debug --predicate 'subsystem BEGINSWITH "app.lirevo"'
 
 - Write unit tests for new logic (Swift Testing). Use mock sources for behavior that needs hardware or permissions.
 - For changes that must be verified on real hardware (permission prompts, lock screen, multiple displays, visual quality), include **manual test steps** in the pull request description.
+
+### CI
+
+On every push and pull request, GitHub Actions (`.github/workflows/ci.yml`) runs the package tests, a Release build, an arm64-only check and the app unit tests. Warnings are treated as errors. UI tests don't run in CI; run them locally for UI-affecting changes.
 
 ### Commits and pull requests
 

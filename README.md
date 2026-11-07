@@ -1,5 +1,7 @@
 # Lirevo
 
+[![CI](https://github.com/egebayramakgun/lirevo/actions/workflows/ci.yml/badge.svg)](https://github.com/egebayramakgun/lirevo/actions/workflows/ci.yml)
+
 **[Türkçe](#türkçe) · [English](#english)**
 
 <!-- Demo GIF/video buraya gelecek / Demo GIF/video goes here:

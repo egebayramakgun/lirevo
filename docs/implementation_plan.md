@@ -88,7 +88,7 @@ Toplam v1.0 (M0–M9): ~7–9 hafta.
 | M1-T3 | Core: `EventBus`, `HealthReporting`, `FeatureFlags`, `Logger` kategorileri | Birim testleri |
 | M1-T4 | Persistence: GRDB kurulumu, migration v1 (`backend_schema.md` §2), bakım işi | Migration testleri |
 | M1-T5 | Sistem Durumu paneli iskeleti (sahte servislerle) | Sahte servislerin durumu listeleniyor |
-| M1-T6 | CI: GitHub Actions macOS runner, build + test | Her PR'da yeşil |
+| M1-T6 | CI: GitHub Actions macOS runner, build + test | Her PR'da yeşil. Runner: `xcode-27` (proje biçimi Xcode 27 gerektirir); ad-hoc imza, uyarılar hata; arayüz testleri yalnız yerelde |
 | M1-T7 | Açık kaynak depo dosyaları: `LICENSE` (GPL-3.0), `README.md` (TR+EN), `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `TRADEMARKS.md`, `.github/` şablonları | CLAUDE.md "Açık kaynak depo hijyeni" listesi tamam |
 
 ---

@@ -72,7 +72,11 @@ xcodebuild -project Lirevo.xcodeproj -scheme Lirevo -destination 'platform=macOS
 
 # Loglar
 log stream --level debug --predicate 'subsystem BEGINSWITH "app.lirevo"'
+
+# CI ile aynı koşullar (takım yok, ad-hoc imza, uyarılar hata)
+xcodebuild -project Lirevo.xcodeproj -scheme Lirevo -destination 'platform=macOS,arch=arm64' CODE_SIGN_IDENTITY=- CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM= SWIFT_TREAT_WARNINGS_AS_ERRORS=YES GCC_TREAT_WARNINGS_AS_ERRORS=YES test -only-testing:LirevoTests
 ```
+CI (`.github/workflows/ci.yml`) `xcode-27` runner'ında çalışır; arayüz testleri (`LirevoUITests`) yalnız yerelde çalıştırılır.
 Komutlar proje kuruldukça güncellenir; değişirse bu bölümü düzelt.
 
 ## Açık kaynak depo hijyeni
